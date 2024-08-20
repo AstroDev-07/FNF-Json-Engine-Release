@@ -28,7 +28,6 @@ class JsonModLoader {
             case "yellow": return FlxColor.YELLOW;
             case "cyan": return FlxColor.CYAN;
             case "magenta": return FlxColor.MAGENTA;
-            // Add more colors as needed
             default: return FlxColor.WHITE; // Default to white if color name is unrecognized
         }
     }
