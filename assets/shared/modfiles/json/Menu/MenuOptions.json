@@ -1,0 +1,9 @@
+{
+    "IncludeStoryMode": true,
+    "IncludeFreeplay": true,
+    "IncludeMods": true,
+    "IncludeAwards": true,
+    "IncludeCredits": true,
+    "IncludeDonos": false,
+    "IncludeOptions": true
+}
