@@ -5,5 +5,6 @@
     "IncludeAwards": true,
     "IncludeCredits": true,
     "IncludeDonos": false,
-    "IncludeOptions": true
+    "IncludeOptions": true,
+    "AllowDebug": true
 }

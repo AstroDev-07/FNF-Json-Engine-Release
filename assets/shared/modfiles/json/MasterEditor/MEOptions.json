@@ -1,0 +1,10 @@
+{
+    "AllowChartEditor": true,
+    "AllowCharacterEditor": true,
+    "AllowWeekEditor": true,
+    "AllowMenuCharEditor": false,
+    "AllowDialogEditor": false,
+    "AllowPortraitEditor": false,
+    "AllowNoteSplashDebug": false,
+    "AllowJSONOptions": true
+}
