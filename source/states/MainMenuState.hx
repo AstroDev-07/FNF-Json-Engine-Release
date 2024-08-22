@@ -19,6 +19,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	public var canQuit:Bool;
+	public var allowDebugMenu:Bool;
 
 	var quitText:FlxText;
 
@@ -72,6 +73,10 @@ class MainMenuState extends MusicBeatState
 		{
 			optionShit.push('options');
 		}
+		if(menuOptionConfig.AllowDebug == "true")
+		{
+			allowDebugMenu = true;
+		}
 
 		// null check so game doesn't kill itself
 		if(optionShit == null)
@@ -89,13 +94,23 @@ class MainMenuState extends MusicBeatState
 		var engineName = menuConfig.EngineName;
 		var engineVer = menuConfig.EngineVer;
 
+		var introMusic = menuConfig.BGMusic;
+
+        if(FlxG.sound.music == null) {
+            FlxG.sound.playMusic(Paths.music(introMusic), 0);
+        }
+
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
 		persistentUpdate = persistentDraw = true;
 
+		var imageConfig = JsonModLoader.loadStateJson("Menu", "MenuImage");
+		var daBG = imageConfig.BackGround;
+		var daBGM = imageConfig.BackGroundMagenta;
+
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image(daBG));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
@@ -106,7 +121,7 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+		magenta = new FlxSprite(-80).loadGraphic(Paths.image(daBGM));
 		magenta.antialiasing = ClientPrefs.data.antialiasing;
 		magenta.scrollFactor.set(0, yScroll);
 		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
@@ -167,6 +182,11 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		var updateMenuConfig = JsonModLoader.loadStateJson("Menu", "MenuState");
+		var cancelSound = updateMenuConfig.CancelSound;
+		var confirmSound = updateMenuConfig.ConfirmSound;
+		
+
 		if(FlxG.keys.justPressed.Q)
 		{
 			Sys.exit(0);
@@ -190,13 +210,13 @@ class MainMenuState extends MusicBeatState
 			if (controls.BACK)
 			{
 				selectedSomethin = true;
-				FlxG.sound.play(Paths.sound('cancelMenu'));
+				FlxG.sound.play(Paths.sound(cancelSound));
 				MusicBeatState.switchState(new TitleState());
 			}
 
 			if (controls.ACCEPT)
 			{
-				FlxG.sound.play(Paths.sound('confirmMenu'));
+				FlxG.sound.play(Paths.sound(confirmSound));
 				if (optionShit[curSelected] == 'donate')
 				{
 					CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
@@ -256,7 +276,7 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 			#if desktop
-			if (controls.justPressed('debug_1'))
+			if (allowDebugMenu == true && controls.justPressed('debug_1'))
 			{
 				selectedSomethin = true;
 				MusicBeatState.switchState(new MasterEditorMenu());
@@ -269,7 +289,11 @@ class MainMenuState extends MusicBeatState
 
 	function changeItem(huh:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		var scrollMenuConfig = JsonModLoader.loadStateJson("Menu", "MenuState");
+
+		var scrollSound = scrollMenuConfig.ScrollSound;
+
+		FlxG.sound.play(Paths.sound(scrollSound));
 		menuItems.members[curSelected].animation.play('idle');
 		menuItems.members[curSelected].updateHitbox();
 		menuItems.members[curSelected].screenCenter(X);

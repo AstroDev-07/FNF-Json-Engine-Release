@@ -7,17 +7,12 @@ import objects.Character;
 import states.MainMenuState;
 import states.FreeplayState;
 
+import utility.JsonModLoader;
+
 class MasterEditorMenu extends MusicBeatState
 {
-	var options:Array<String> = [
-		'Chart Editor',
-		'Character Editor',
-		'Week Editor',
-		'Menu Character Editor',
-		'Dialogue Editor',
-		'Dialogue Portrait Editor',
-		'Note Splash Debug'
-	];
+	var options:Array<String> = [];
+
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
 
@@ -33,7 +28,53 @@ class MasterEditorMenu extends MusicBeatState
 		DiscordClient.changePresence("Editors Main Menu", null);
 		#end
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var editorOptionConfig = JsonModLoader.loadStateJson("MasterEditor", "MEOptions");
+
+		// another if block
+
+		if(editorOptionConfig.AllowChartEditor == "true")
+		{
+			options.push('Chart Editor');
+		}
+		if(editorOptionConfig.AllowCharacterEditor == "true")
+		{
+			options.push('Character Editor');
+		}
+		if(editorOptionConfig.AllowWeekEditor == "true")
+		{
+			options.push('Week Editor');
+		}
+		if(editorOptionConfig.AllowMenuCharEditor == "true")
+		{
+			options.push('Menu Character Editor');
+		}
+		if(editorOptionConfig.AllowDialogEditor == "true")
+		{
+			options.push('Dialogue Editor');
+		}
+		if(editorOptionConfig.AllowPortraitEditor == "true")
+		{
+			options.push('Dialogue Portrait Editor');
+		}
+		if(editorOptionConfig.AllowNoteSplashDebug == "true")
+		{
+			options.push('Note Splash Debug');
+		}
+		if(editorOptionConfig.AllowJSONOptions == "true")
+		{
+			options.push('Json State Editor');
+		}
+
+		if(options == null)
+		{
+			options.push('Chart Editor');
+		}
+
+
+		var editorBGConfig = JsonModLoader.loadStateJson("MasterEditor", "MEBG");
+		var bgIMG = editorBGConfig.BackGround;
+
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image(bgIMG));
 		bg.scrollFactor.set();
 		bg.color = 0xFF353535;
 		add(bg);
@@ -118,6 +159,8 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Note Splash Debug':
 					MusicBeatState.switchState(new NoteSplashDebugState());
+				case 'Json State Editor':
+					MusicBeatState.switchState(new JsonEditorState());
 			}
 			FlxG.sound.music.volume = 0;
 			FreeplayState.destroyFreeplayVocals();

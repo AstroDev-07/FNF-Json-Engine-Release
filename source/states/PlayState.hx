@@ -1999,6 +1999,8 @@ class PlayState extends MusicBeatState
 					boyfriend.heyTimer = flValue2;
 				}
 
+
+
 			case 'Set GF Speed':
 				if(flValue1 == null || flValue1 < 1) flValue1 = 1;
 				gfSpeed = Math.round(flValue1);

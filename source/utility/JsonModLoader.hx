@@ -34,7 +34,7 @@ class JsonModLoader {
     }
 
     public static function getImage(imageName:String):String {
-        return "assets/images/" + imageName + ".png";
+        return imageName;
     }
 
     public static function getMusic(musicFile:String):String {

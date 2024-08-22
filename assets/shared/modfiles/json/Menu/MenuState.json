@@ -1,4 +1,8 @@
 {
     "EngineName": "Json Engine BETA ",
-    "EngineVer": "0.0.1"
+    "EngineVer": "0.0.1",
+    "BGMusic": "freakyMenu",
+    "CancelSound": "cancelMenu",
+    "ConfirmSound": "confirmMenu",
+    "ScrollSound": "scrollMenu"
 }
