@@ -187,6 +187,10 @@ class TitleState extends MusicBeatState
 
 		var introConfig = JsonModLoader.loadStateJson("Intro", "IntroState");
 		var introMusic:String = JsonModLoader.getMusic(introConfig.IntroMusic);
+		var customBG = introConfig.CustomBG;
+		var titleBG = introConfig.BackGround;
+		var allowLogo = introConfig.AllowLogo;
+		var allowGF = introConfig.AllowGF;
 
 	
 		if (!initialized)
@@ -204,6 +208,10 @@ class TitleState extends MusicBeatState
 
 		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none"){
 			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
+		}
+		if(customBG == "true")
+		{
+			bg.loadGraphic(Paths.image(titleBG));
 		}else{
 			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		}
@@ -256,8 +264,16 @@ class TitleState extends MusicBeatState
 				gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		}
 
-		add(gfDance);
-		add(logoBl);
+		if(allowGF == "true")
+		{
+			add(gfDance);
+		}
+
+		if(allowLogo == "true")
+		{
+			add(logoBl);
+		}
+		
 		if(swagShader != null)
 		{
 			gfDance.shader = swagShader.shader;
@@ -355,6 +371,9 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		var titleSoundConfig = JsonModLoader.loadStateJson("Intro", "IntroState");
+		var enterSound = titleSoundConfig.EnterSound;
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -413,7 +432,7 @@ class TitleState extends MusicBeatState
 				if(titleText != null) titleText.animation.play('press');
 
 				FlxG.camera.flash(ClientPrefs.data.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
-				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+				FlxG.sound.play(Paths.sound(enterSound), 0.7);
 
 				transitioning = true;
 				// FlxG.sound.music.stop();
