@@ -147,6 +147,9 @@ class TitleState extends MusicBeatState
 			persistentDraw = true;
 		}
 
+		var warnConfig = JsonModLoader.loadStateJson("WarningState", "WarningState");
+		var goToWarn = warnConfig.GoToWarnScreen;
+
 		if (FlxG.save.data.weekCompleted != null)
 		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
@@ -158,7 +161,7 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
+		if(goToWarn == "true" && !FlashingState.leftState) {
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState());
@@ -189,8 +192,8 @@ class TitleState extends MusicBeatState
 		var introMusic:String = JsonModLoader.getMusic(introConfig.IntroMusic);
 		var customBG = introConfig.CustomBG;
 		var titleBG = introConfig.BackGround;
-		var allowLogo = introConfig.AllowLogo;
-		var allowGF = introConfig.AllowGF;
+		var allowdefLogo = introConfig.AllowDefaultLogo;
+		var allowdefGF = introConfig.AllowDefaultGF;
 
 	
 		if (!initialized)
@@ -220,6 +223,7 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
+		
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = ClientPrefs.data.antialiasing;
@@ -227,13 +231,20 @@ class TitleState extends MusicBeatState
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
+		
+
+		
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 
 		if(ClientPrefs.data.shaders) swagShader = new ColorSwap();
+
+		
+		
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
 		gfDance.antialiasing = ClientPrefs.data.antialiasing;
-
+		
+		
 		var easterEgg:String = FlxG.save.data.psychDevsEasterEgg;
 		if(easterEgg == null) easterEgg = ''; //html5 fix
 
@@ -264,12 +275,12 @@ class TitleState extends MusicBeatState
 				gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		}
 
-		if(allowGF == "true")
+		if(allowdefGF == "true")
 		{
 			add(gfDance);
 		}
 
-		if(allowLogo == "true")
+		if(allowdefLogo == "true")
 		{
 			add(logoBl);
 		}

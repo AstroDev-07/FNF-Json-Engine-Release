@@ -6,6 +6,8 @@ import flixel.effects.FlxFlicker;
 import lime.app.Application;
 import flixel.addons.transition.FlxTransitionableState;
 
+import utility.JsonModLoader;
+
 class FlashingState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
@@ -18,13 +20,10 @@ class FlashingState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, watch out!\n
-			This Mod contains some flashing lights!\n
-			Press ENTER to disable them now or go to Options Menu.\n
-			Press ESCAPE to ignore this message.\n
-			You've been warned!",
-			32);
+		var daTextConfig = JsonModLoader.loadStateJson("WarningState", "WarningText");
+		var daText = daTextConfig.TextToShow;
+
+		warnText = new FlxText(0, 0, FlxG.width, daText, 32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
