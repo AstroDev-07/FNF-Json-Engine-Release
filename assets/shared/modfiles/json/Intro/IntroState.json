@@ -1,8 +1,8 @@
 {
-    "IntroMusic": "freakyMenu",
-    "EnterSound": "confirmMenu",
+    "IntroMusic": "deadM",
+    "EnterSound": "deadConfirm",
     "CustomBG": true,
     "BackGround": "deadBG",
-    "AllowLogo": true,
-    "AllowGF": true
+    "AllowDefaultLogo": true,
+    "AllowDefaultGF": true
 }

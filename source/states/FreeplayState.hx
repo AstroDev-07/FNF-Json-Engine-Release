@@ -12,6 +12,8 @@ import substates.ResetScoreSubState;
 
 import flixel.math.FlxMath;
 
+import utility.JsonModLoader;
+
 class FreeplayState extends MusicBeatState
 {
 	var songs:Array<SongMetadata> = [];
@@ -57,9 +59,12 @@ class FreeplayState extends MusicBeatState
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
 
+		var freeplayConfig = JsonModLoader.loadStateJson("Freeplay", "FreeplayState");
+		var clientMessage = freeplayConfig.ClientMessage;
+
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence(clientMessage, null);
 		#end
 
 		for (i in 0...WeekData.weeksList.length) {
@@ -88,7 +93,9 @@ class FreeplayState extends MusicBeatState
 		}
 		Mods.loadTopMod();
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var bgIMG = freeplayConfig.BackGroundImage;
+
+		bg = new FlxSprite().loadGraphic(Paths.image(bgIMG));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
@@ -96,9 +103,34 @@ class FreeplayState extends MusicBeatState
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
+		var allowIcon = freeplayConfig.AllowIcon;
+		var hideSongName = freeplayConfig.HideSongNameUntilCompletion;		
+
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+			var songName:String = songs[i].songName;
+			
+			// wrap in an if
+			if(hideSongName == true)
+			{
+				var beatenSong:Bool = false;
+	
+				if(lerpScore > 0)
+				{
+					beatenSong = true;
+					songName = songs[i].songName;
+				}
+	
+				if(beatenSong == false)
+				{
+					var hiddenName:String = "?????";
+					songName = hiddenName;
+				} else {
+					songName = songs[i].songName;
+				}
+			}
+
+			var songText:Alphabet = new Alphabet(90, 320, songName, true);
 			songText.targetY = i;
 			grpSongs.add(songText);
 
@@ -116,7 +148,13 @@ class FreeplayState extends MusicBeatState
 
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
-			add(icon);
+
+			if(allowIcon == true)
+			{
+				add(icon);
+			} else {
+				trace("Icon ommited as per json.");
+			}
 
 			// songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
