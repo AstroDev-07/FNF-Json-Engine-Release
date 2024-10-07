@@ -59,6 +59,8 @@ import psychlua.HScript;
 import tea.SScript;
 #end
 
+import utility.JsonModLoader;
+
 /**
  * This is where all the Gameplay stuff happens and is managed
  *
@@ -529,12 +531,28 @@ class PlayState extends MusicBeatState
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		moveCameraSection();
 
-		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function() return health, 0, 2);
+		var healthBarConfig = JsonModLoader.loadStateJson("Playstate", "HealthBar");
+		var daHealthBar = healthBarConfig.HPBarAsset;
+		var daBarWidth = healthBarConfig.BarWidth;
+		var daBarHeight = healthBarConfig.BarHeight;
+		var daBarOffsetX = healthBarConfig.BarOffsetX;
+		var daBarOffsetY = healthBarConfig.BarOffsetY;
+		var daBarX = healthBarConfig.HPX;
+		var daBarY = healthBarConfig.HPY;
+		//FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11) if i ever need it
+
+		healthBar = new Bar(daBarX, daBarY, daHealthBar, function() return health, 0, 2);
 		healthBar.screenCenter(X);
 		healthBar.leftToRight = false;
 		healthBar.scrollFactor.set();
 		healthBar.visible = !ClientPrefs.data.hideHud;
 		healthBar.alpha = ClientPrefs.data.healthBarAlpha;
+
+		// alter bar
+		healthBar.barWidth = daBarWidth;
+		healthBar.barHeight = daBarHeight;
+		healthBar.barOffset = new FlxPoint(daBarOffsetX, daBarOffsetY);
+
 		reloadHealthBarColors();
 		uiGroup.add(healthBar);
 

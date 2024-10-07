@@ -1,0 +1,9 @@
+{
+    "HPBarAsset": "MadnessHealthBar",
+    "BarWidth": 100,
+    "BarHeight": 100,
+    "BarOffsetX": 6,
+    "BarOffsetY": 6,
+    "HPX": 300,
+    "HPY": 100
+}

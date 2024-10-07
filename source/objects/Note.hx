@@ -12,6 +12,8 @@ import flixel.math.FlxRect;
 
 using StringTools;
 
+import utility.JsonModLoader;
+
 typedef EventNote = {
 	strumTime:Float,
 	event:String,
@@ -81,13 +83,21 @@ class Note extends FlxSprite
 	public var lateHitMult:Float = 1;
 	public var lowPriority:Bool = false;
 
+	public static var noteConfig = JsonModLoader.loadStateJson("Playstate", "NoteConfig");
+	public static var noteColLeft = noteConfig.LeftArrowColor;
+	public static var noteColDown = noteConfig.DownArrowColor;
+	public static var noteColUp = noteConfig.UpArrowColor;
+	public static var noteColRight = noteConfig.RightArrowColor;
+	public static var noteAssets = noteConfig.NoteSpriteSheet;
+	public static var hasSplash = noteConfig.AllowNoteSplash;
+
 	public static var SUSTAIN_SIZE:Int = 44;
 	public static var swagWidth:Float = 160 * 0.7;
-	public static var colArray:Array<String> = ['purple', 'blue', 'green', 'red'];
-	public static var defaultNoteSkin(default, never):String = 'noteSkins/NOTE_assets';
+	public static var colArray:Array<String> = [noteColLeft, noteColDown, noteColUp, noteColRight];
+	public static var defaultNoteSkin(default, never):String = 'noteSkins/' + noteAssets;
 
 	public var noteSplashData:NoteSplashData = {
-		disabled: false,
+		disabled: hasSplash,
 		texture: null,
 		antialiasing: !PlayState.isPixelStage,
 		useGlobalShader: false,

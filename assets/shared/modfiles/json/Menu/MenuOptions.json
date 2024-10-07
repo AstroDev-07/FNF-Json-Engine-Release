@@ -1,8 +1,8 @@
 {
-    "IncludeStoryMode": true,
+    "IncludeStoryMode": false,
     "IncludeFreeplay": true,
-    "IncludeMods": true,
-    "IncludeAwards": true,
+    "IncludeMods": false,
+    "IncludeAwards": false,
     "IncludeCredits": true,
     "IncludeDonos": false,
     "IncludeOptions": true,

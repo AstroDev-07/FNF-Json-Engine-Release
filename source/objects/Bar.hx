@@ -2,6 +2,8 @@ package objects;
 
 import flixel.math.FlxRect;
 
+import utility.JsonModLoader;
+
 class Bar extends FlxSpriteGroup
 {
 	public var leftBar:FlxSprite;
@@ -13,14 +15,26 @@ class Bar extends FlxSpriteGroup
 	public var leftToRight(default, set):Bool = true;
 	public var barCenter(default, null):Float = 0;
 
+	// json values
+	public var healthBarConfig:Dynamic;
+	public var daHealthBar:String;
+
 	// you might need to change this if you want to use a custom bar
 	public var barWidth(default, set):Int = 1;
 	public var barHeight(default, set):Int = 1;
 	public var barOffset:FlxPoint = new FlxPoint(3, 3);
 
-	public function new(x:Float, y:Float, image:String = 'healthBar', valueFunction:Void->Float = null, boundX:Float = 0, boundY:Float = 1)
+	public function new(x:Float, y:Float, image:String = null, valueFunction:Void->Float = null, boundX:Float = 0, boundY:Float = 1)
 	{
 		super(x, y);
+
+		healthBarConfig = JsonModLoader.loadStateJson("Playstate", "HealthBar");
+		daHealthBar = healthBarConfig.HPBarAsset;
+
+		if(image == null)
+		{
+			image = daHealthBar;
+		}
 		
 		this.valueFunction = valueFunction;
 		setBounds(boundX, boundY);
