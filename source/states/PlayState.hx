@@ -537,11 +537,11 @@ class PlayState extends MusicBeatState
 		var daBarHeight = healthBarConfig.BarHeight;
 		var daBarOffsetX = healthBarConfig.BarOffsetX;
 		var daBarOffsetY = healthBarConfig.BarOffsetY;
-		var daBarX = healthBarConfig.HPX;
-		var daBarY = healthBarConfig.HPY;
+		//var daBarX = healthBarConfig.HPX;
+		//var daBarY = healthBarConfig.HPY;
 		//FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11) if i ever need it
 
-		healthBar = new Bar(daBarX, daBarY, daHealthBar, function() return health, 0, 2);
+		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), daHealthBar, function() return health, 0, 2);
 		healthBar.screenCenter(X);
 		healthBar.leftToRight = false;
 		healthBar.scrollFactor.set();
