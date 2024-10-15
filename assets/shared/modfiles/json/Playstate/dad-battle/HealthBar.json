@@ -1,0 +1,8 @@
+{
+    "HPBarAsset": "healthBar",
+    "BarWidth": 600,
+    "BarHeight": 400,
+    "BarOffsetX": 1,
+    "BarOffsetY": 2,
+    "LeftToRight": false
+}

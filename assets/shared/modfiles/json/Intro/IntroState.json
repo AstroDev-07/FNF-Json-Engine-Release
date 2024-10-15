@@ -1,8 +1,8 @@
 {
     "IntroMusic": "freakyMenu",
     "EnterSound": "confirmMenu",
-    "CustomBG": true,
+    "CustomBG": false,
     "BackGround": "madness_picomix",
-    "AllowDefaultLogo": false,
-    "AllowDefaultGF": false
+    "AllowDefaultLogo": true,
+    "AllowDefaultGF": true
 }

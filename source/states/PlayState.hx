@@ -531,19 +531,25 @@ class PlayState extends MusicBeatState
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		moveCameraSection();
 
-		var healthBarConfig = JsonModLoader.loadStateJson("Playstate", "HealthBar");
+	
+		
+		
+		
+		var healthBarConfig = JsonModLoader.loadStateJson("Playstate/" + songName, "HealthBar");
+			
 		var daHealthBar = healthBarConfig.HPBarAsset;
 		var daBarWidth = healthBarConfig.BarWidth;
 		var daBarHeight = healthBarConfig.BarHeight;
 		var daBarOffsetX = healthBarConfig.BarOffsetX;
 		var daBarOffsetY = healthBarConfig.BarOffsetY;
+		var daBarFlipped = healthBarConfig.LeftToRight;
 		//var daBarX = healthBarConfig.HPX;
 		//var daBarY = healthBarConfig.HPY;
 		//FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11) if i ever need it
 
 		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), daHealthBar, function() return health, 0, 2);
 		healthBar.screenCenter(X);
-		healthBar.leftToRight = false;
+		healthBar.leftToRight = daBarFlipped;
 		healthBar.scrollFactor.set();
 		healthBar.visible = !ClientPrefs.data.hideHud;
 		healthBar.alpha = ClientPrefs.data.healthBarAlpha;
@@ -1842,9 +1848,25 @@ class PlayState extends MusicBeatState
 
 	public dynamic function updateIconsPosition()
 	{
-		var iconOffset:Int = 26;
-		iconP1.x = healthBar.barCenter + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		iconP2.x = healthBar.barCenter - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+		
+
+		var hpIconConfig = JsonModLoader.loadStateJson("Playstate/" + songName, "HealthIcon");
+		
+		var hardCodedXPositions = hpIconConfig.HardcodeIcons; 
+		var bfHardX = hpIconConfig.BFX;
+		var dadHardX = hpIconConfig.DadX;
+
+		if(hardCodedXPositions == "false")
+		{
+			var iconOffset:Int = 26;
+			iconP1.x = healthBar.barCenter + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
+			iconP2.x = healthBar.barCenter - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+		} else {
+			var iconOffset:Int = 26;
+			iconP1.x = bfHardX;
+			iconP2.x = dadHardX;
+		}
+		
 	}
 
 	var iconsAnimations:Bool = true;

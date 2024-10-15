@@ -27,14 +27,6 @@ class Bar extends FlxSpriteGroup
 	public function new(x:Float, y:Float, image:String = null, valueFunction:Void->Float = null, boundX:Float = 0, boundY:Float = 1)
 	{
 		super(x, y);
-
-		healthBarConfig = JsonModLoader.loadStateJson("Playstate", "HealthBar");
-		daHealthBar = healthBarConfig.HPBarAsset;
-
-		if(image == null)
-		{
-			image = daHealthBar;
-		}
 		
 		this.valueFunction = valueFunction;
 		setBounds(boundX, boundY);
